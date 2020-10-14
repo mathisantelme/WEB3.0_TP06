@@ -121,3 +121,29 @@ END
 ---
 
 ### Exercice 2
+
+> Extraire la hiérarchie de classes des données (disponibles sous moodle) à l’aide d’une requête **SPARQL** et visualiser le résultat de la requête (vous pouvez utiliser l’outil `Webvowl`, http://www.visualdataweb.de/webvowl/);
+
+Afin d'obtenir la hiérarchie de classe des données on va utiliser la requête **SPARQL** suivante:
+
+> Requête:
+
+```SQL
+PREFIX log: <http://www.w3.org/2000/10/swap/log#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>                                                                                                                                                                                                               
+SELECT *
+WHERE {
+    ?x rdfs:subClassOf ?y.
+}
+```
+
+[Résultats](res/ontology.xml.json)    
+
+## 2. Vérification de caractéristiques de propriétés et requêtes **SPARQL**
+
+### Exercice 3 
+
+> Identifier des propriétés de l'ontologie qui sont *sémantiquement* fonctionelles, où une propriété
+
+>
