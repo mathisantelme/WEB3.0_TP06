@@ -126,7 +126,7 @@ END
 
 Afin d'obtenir la hiérarchie de classe des données on va utiliser la requête **SPARQL** suivante:
 
-> Requête:
+**Requête**:
 
 ```SQL
 PREFIX log: <http://www.w3.org/2000/10/swap/log#>
@@ -136,14 +136,314 @@ SELECT *
 WHERE {
     ?x rdfs:subClassOf ?y.
 }
-```
+``` 
 
-[Résultats](res/ontology.xml.json)    
+La requête précédente fournit lesrésultats suivants:
+
+```xml
+<?xml version="1.0"?>
+<sparql xmlns='http://www.w3.org/2005/sparql-results#'>
+    <head>
+        <variable name='x' />
+        <variable name='y' />
+    </head>
+    <results>
+        <result>
+            <binding name='x'>
+                <uri>http://www.w3.org/2002/07/owl#Thing</uri>
+            </binding>
+            <binding name='y'>
+                <uri>http://www.w3.org/2002/07/owl#Thing</uri>
+            </binding>
+        </result>
+        <result>
+            <binding name='x'>
+                <uri>http://www.w3.org/2002/07/owl#Nothing</uri>
+            </binding>
+            <binding name='y'>
+                <uri>http://www.w3.org/2002/07/owl#Thing</uri>
+            </binding>
+        </result>
+        <result>
+            <binding name='x'>
+                <uri>http://www.w3.org/2002/07/owl#Nothing</uri>
+            </binding>
+            <binding name='y'>
+                <uri>http://www.w3.org/2002/07/owl#Nothing</uri>
+            </binding>
+        </result>
+    </results>
+</sparql>
+```
 
 ## 2. Vérification de caractéristiques de propriétés et requêtes **SPARQL**
 
 ### Exercice 3 
 
-> Identifier des propriétés de l'ontologie qui sont *sémantiquement* fonctionelles, où une propriété
+> Identifier des propriétés de l'ontologie qui sont *sémantiquement* fonctionnelles, où une propriété entre deux instances est *fonctionnelle* lorsque qu'elle associe au plus une valeur à chaque objet;
 
->
+Voici une courte sélection des propriétés fonctionnelles identifiables dans le fichier `ontology.xml`:
+
+`hasBeenCreatedBy`
+
+```xml
+<owl:ObjectProperty rdf:about="https://www.datatourisme.gouv.fr/ontology/core#hasBeenCreatedBy">
+    <owl:inverseOf rdf:resource="https://www.datatourisme.gouv.fr/ontology/core#hasCreated" />
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty" />
+    <rdfs:domain rdf:resource="https://www.datatourisme.gouv.fr/ontology/core#PointOfInterest" />
+    <rdfs:range rdf:resource="https://www.datatourisme.gouv.fr/ontology/core#Agent" />
+    <rdfs:comment xml:lang="fr">L&apos;agent qui a créé ce POI dans le système d&apos;information.</rdfs:comment>
+    <rdfs:comment xml:lang="en">The agent who has created the POI in the system.</rdfs:comment>
+    <rdfs:label xml:lang="fr">a été créé par</rdfs:label>
+    <rdfs:label xml:lang="en">has been created by</rdfs:label>
+    <hasPriority rdf:datatype="http://www.w3.org/2001/XMLSchema#float">8.0</hasPriority>
+</owl:ObjectProperty>
+```
+
+`hasEligiblePolicy`
+
+```xml
+<owl:ObjectProperty rdf:about="https://www.datatourisme.gouv.fr/ontology/core#hasEligiblePolicy">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty" />
+    <rdfs:domain rdf:resource="https://www.datatourisme.gouv.fr/ontology/core#PriceSpecification" />
+    <rdfs:range rdf:resource="https://www.datatourisme.gouv.fr/ontology/core#PricingPolicy" />
+    <rdfs:comment xml:lang="fr">La politique de prix qui s&apos;applique. Ex: Plein tarif.</rdfs:comment>
+    <rdfs:comment xml:lang="en">The pricing policy the pricing applies on. Ex: Base rate.</rdfs:comment>
+    <rdfs:label xml:lang="fr">a comme politique de tarification</rdfs:label>
+    <rdfs:label xml:lang="en">has eligible policy</rdfs:label>
+    <hasPriority rdf:datatype="http://www.w3.org/2001/XMLSchema#float">7.0</hasPriority>
+</owl:ObjectProperty>
+```
+
+`worstRating`
+
+```xml
+<owl:DatatypeProperty rdf:about="https://www.datatourisme.gouv.fr/ontology/core#worstRating">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty" />
+    <rdfs:domain rdf:resource="https://www.datatourisme.gouv.fr/ontology/core#ScaleReviewSystem" />
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int" />
+    <rdfs:comment xml:lang="fr">La pire valeur que ce système de classement propose.</rdfs:comment>
+    <rdfs:comment xml:lang="en">The worst rating a scale review system provides.</rdfs:comment>
+    <rdfs:label xml:lang="fr">Pire note</rdfs:label>
+    <rdfs:label xml:lang="en">Worst rating</rdfs:label>
+    <hasPriority rdf:datatype="http://www.w3.org/2001/XMLSchema#float">10.0</hasPriority>
+</owl:DatatypeProperty>
+```
+
+> Extraire chacune de ces propriétés à l'aide d'une requête **SPARQL**;
+
+```SQL
+
+```
+
+> Mettre en place un traitement `VerifFunctionelle` qui, pour un nom de propriété, récupère les triplets de cette propriété à l’aide d’une requête **SPARQL**, et vérifie qu’il s’agit bien d’une propriété fonctionnelle;
+
+## 3. Visualisation de données géolocalisées et requêtes **GraphQL**
+
+### Exercice 5
+
+> Que renvoie la requête **GraphQL** suivante:
+
+```json
+{
+    poi(
+    filters:[{ 
+        isLocatedAt: { 
+            schema_address : { 
+                schema_addressLocality : { 
+                    _eq: "La Rochelle"
+                }
+            } 
+        } 
+    }])
+    { 
+        total results{rdf_type _uri rdfs_label{ value } }
+    }
+}
+```
+
+On obtient le résultat suivant, qui correspond aux **POI** localisé à la Rochelle:
+
+```json
+{
+    "data": {
+        "poi": {
+            "total": 99,
+            "results": [
+                {
+                    "rdf_type": [
+                        "urn:resource",
+                        "http://schema.org/LocalBusiness",
+                        "https://www.datatourisme.gouv.fr/ontology/core#PlaceOfInterest",
+                        "https://www.datatourisme.gouv.fr/ontology/core#PointOfInterest",
+                        "https://www.datatourisme.gouv.fr/ontology/core#SightseeingBoat",
+                        "https://www.datatourisme.gouv.fr/ontology/core#SportsAndLeisurePlace"
+                    ],
+                    "_uri": "https://data.datatourisme.gouv.fr/20/02242e2d-489f-3480-996c-48ef2eb193d6",
+                    "rdfs_label": [
+                        {
+                            "value": "LA ROCHELLE CROISIERES"
+                        }
+                    ]
+                },
+                {
+                    "rdf_type": [
+                        "urn:resource",
+                        "http://schema.org/CivicStructure",
+                        "http://schema.org/Event",
+                        "https://www.datatourisme.gouv.fr/ontology/core#EntertainmentAndEvent",
+                        "https://www.datatourisme.gouv.fr/ontology/core#PlaceOfInterest",
+                        "https://www.datatourisme.gouv.fr/ontology/core#PlayArea",
+                        "https://www.datatourisme.gouv.fr/ontology/core#PointOfInterest",
+                        "https://www.datatourisme.gouv.fr/ontology/core#SportsAndLeisurePlace",
+                        "https://www.datatourisme.gouv.fr/ontology/core#SportsEvent"
+                    ],
+                    "_uri": "https://data.datatourisme.gouv.fr/20/026949c8-aac9-32bf-9773-3d099675cb15",
+                    "rdfs_label": [
+                        {
+                            "value": "CHASSE AU TR��SOR TERRA AVENTURA"
+                        }
+                    ]
+                },
+                {
+                    "rdf_type": [
+                        "urn:resource",
+                        "http://schema.org/LocalBusiness",
+                        "http://schema.org/Museum",
+                        "https://www.datatourisme.gouv.fr/ontology/core#CulturalSite",
+                        "https://www.datatourisme.gouv.fr/ontology/core#Museum",
+                        "https://www.datatourisme.gouv.fr/ontology/core#PlaceOfInterest",
+                        "https://www.datatourisme.gouv.fr/ontology/core#PointOfInterest"
+                    ],
+                    "_uri": "https://data.datatourisme.gouv.fr/20/04f7fba2-23d5-3049-92be-09226732139f",
+                    "rdfs_label": [
+                        {
+                            "value": "MUSEE DU NOUVEAU MONDE"
+                        }
+                    ]
+                },
+                {
+                    "rdf_type": [
+                        "urn:resource",
+                        "https://www.datatourisme.gouv.fr/ontology/core#PlaceOfInterest",
+                        "https://www.datatourisme.gouv.fr/ontology/core#PointOfInterest",
+                        "https://www.datatourisme.gouv.fr/ontology/core#SportsAndLeisurePlace"
+                    ],
+                    "_uri": "https://data.datatourisme.gouv.fr/20/092111cc-2ff7-3759-b489-583f6321326b",
+                    "rdfs_label": [
+                        {
+                            "value": "LE MARY LILI"
+                        }
+                    ]
+                },
+                {
+                    "rdf_type": [
+                        "urn:resource",
+                        "http://schema.org/LocalBusiness",
+                        "https://www.datatourisme.gouv.fr/ontology/core#PlaceOfInterest",
+                        "https://www.datatourisme.gouv.fr/ontology/core#PointOfInterest",
+                        "https://www.datatourisme.gouv.fr/ontology/core#SightseeingBoat",
+                        "https://www.datatourisme.gouv.fr/ontology/core#SportsAndLeisurePlace"
+                    ],
+                    "_uri": "https://data.datatourisme.gouv.fr/20/0bd69952-5e85-3ed0-b4a1-d4150d4663d3",
+                    "rdfs_label": [
+                        {
+                            "value": "ALDABRA YACHT CHARTER"
+                        }
+                    ]
+                },
+                {
+                    "rdf_type": [
+                        "urn:resource",
+                        "http://schema.org/Park",
+                        "https://www.datatourisme.gouv.fr/ontology/core#CulturalSite",
+                        "https://www.datatourisme.gouv.fr/ontology/core#ParkAndGarden",
+                        "https://www.datatourisme.gouv.fr/ontology/core#PlaceOfInterest",
+                        "https://www.datatourisme.gouv.fr/ontology/core#PointOfInterest"
+                    ],
+                    "_uri": "https://data.datatourisme.gouv.fr/20/0bdb85f6-8b93-3ee8-8966-2c7f406f5b87",
+                    "rdfs_label": [
+                        {
+                            "value": "LE JARDIN DES PLANTES"
+                        }
+                    ]
+                },
+                {
+                    "rdf_type": [
+                        "urn:resource",
+                        "http://schema.org/LocalBusiness",
+                        "https://www.datatourisme.gouv.fr/ontology/core#PlaceOfInterest",
+                        "https://www.datatourisme.gouv.fr/ontology/core#PointOfInterest",
+                        "https://www.datatourisme.gouv.fr/ontology/core#SightseeingBoat",
+                        "https://www.datatourisme.gouv.fr/ontology/core#SportsAndLeisurePlace"
+                    ],
+                    "_uri": "https://data.datatourisme.gouv.fr/20/0c07f4d8-9ef2-3d92-8dc8-a77f6bd98f4a",
+                    "rdfs_label": [
+                        {
+                            "value": "AGENCE PAMPLEMOUSSE"
+                        }
+                    ]
+                },
+                {
+                    "rdf_type": [
+                        "urn:resource",
+                        "https://www.datatourisme.gouv.fr/ontology/core#CulturalSite",
+                        "https://www.datatourisme.gouv.fr/ontology/core#PlaceOfInterest",
+                        "https://www.datatourisme.gouv.fr/ontology/core#PointOfInterest",
+                        "https://www.datatourisme.gouv.fr/ontology/core#RemarkableBuilding",
+                        "https://www.datatourisme.gouv.fr/ontology/core#RemembranceSite",
+                        "https://www.datatourisme.gouv.fr/ontology/core#Tower"
+                    ],
+                    "_uri": "https://data.datatourisme.gouv.fr/20/0c0d338a-ed34-30b4-ae4d-849ffc0e60b1",
+                    "rdfs_label": [
+                        {
+                            "value": "CLOCHER ST BARTHELEMY"
+                        }
+                    ]
+                },
+                {
+                    "rdf_type": [
+                        "urn:resource",
+                        "https://www.datatourisme.gouv.fr/ontology/core#ActivityProvider",
+                        "https://www.datatourisme.gouv.fr/ontology/core#LeisureSportActivityProvider",
+                        "https://www.datatourisme.gouv.fr/ontology/core#PlaceOfInterest",
+                        "https://www.datatourisme.gouv.fr/ontology/core#PointOfInterest"
+                    ],
+                    "_uri": "https://data.datatourisme.gouv.fr/20/0dbf19c6-543a-3281-a651-af5d9a657b46",
+                    "rdfs_label": [
+                        {
+                            "value": "ALTITUDES PARACHUTISME"
+                        }
+                    ]
+                },
+                {
+                    "rdf_type": [
+                        "urn:resource",
+                        "http://schema.org/Park",
+                        "https://www.datatourisme.gouv.fr/ontology/core#CulturalSite",
+                        "https://www.datatourisme.gouv.fr/ontology/core#ParkAndGarden",
+                        "https://www.datatourisme.gouv.fr/ontology/core#PlaceOfInterest",
+                        "https://www.datatourisme.gouv.fr/ontology/core#PointOfInterest"
+                    ],
+                    "_uri": "https://data.datatourisme.gouv.fr/20/0de7d300-f87a-3c36-b26c-75e64cd46501",
+                    "rdfs_label": [
+                        {
+                            "value": "PARC DE LA PORTE ROYALE"
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}
+```
+
+### Exercice 6
+
+> Ecrire une requête **GraphQL** qui renvoie:
+
+1. Les noms des plages de Biarritz et de La Rochelle
+2. Les noms des parcs de La Rochelle
+3. Les noms des propriétaires des restaurants de La Rochelle
+4. Les noms des hôtels de Bordeaux acceptant des animaux
+5. Les plages de Nouvelle Aquitaine accessibles aux personnes à mobilité réduite
