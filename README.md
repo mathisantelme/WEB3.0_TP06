@@ -244,7 +244,7 @@ Voici une courte sélection des propriétés fonctionnelles identifiables dans l
 
 > Que renvoie la requête **GraphQL** suivante:
 
-```json
+```
 {
     poi(
     filters:[{ 
