@@ -442,8 +442,322 @@ On obtient le résultat suivant, qui correspond aux **POI** localisé à la Roch
 
 > Ecrire une requête **GraphQL** qui renvoie:
 
-1. Les noms des plages de Biarritz et de La Rochelle
-2. Les noms des parcs de La Rochelle
-3. Les noms des propriétaires des restaurants de La Rochelle
-4. Les noms des hôtels de Bordeaux acceptant des animaux
-5. Les plages de Nouvelle Aquitaine accessibles aux personnes à mobilité réduite
+> 1. Les noms des plages de Biarritz et de La Rochelle;
+
+**Requête**:
+
+```
+{
+  poi(filters: [{_or: [{isLocatedAt: {schema_address: {schema_addressLocality: {_eq: "La Rochelle"}}}}, {isLocatedAt: {schema_address: {schema_addressLocality: {_eq: "Biarritz"}}}}]}, {rdf_type: {_eq: "https://www.datatourisme.gouv.fr/ontology/core#Beach"}}]) {
+    total
+    results {
+      rdfs_label {
+        value
+      }
+    }
+  }
+}
+```
+
+**Résultats**:
+
+```json
+{
+  "data": {
+    "poi": {
+      "total": 1,
+      "results": [
+        {
+          "rdfs_label": [
+            {
+              "value": "Rocher de la Vierge"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
+```
+
+> 2. Les noms des parcs de La Rochelle;
+
+**Requête**:
+
+```
+{
+  poi(filters: [{_or: [{isLocatedAt: {schema_address: {schema_addressLocality: {_eq: "La Rochelle"}}}}, {rdf_type: {_eq: "http://schema.org/Park"}}]) {
+    total
+    results {
+      isOwnedBy {
+          schema_givenName
+      }
+    }
+  }
+}
+```
+
+**Résultats**:
+
+```json
+{
+  "data": {
+    "poi": {
+      "total": 18,
+      "results": [
+        {
+          "rdfs_label": [
+            {
+              "value": "LE JARDIN DES PLANTES"
+            }
+          ]
+        },
+        {
+          "rdfs_label": [
+            {
+              "value": "PARC DE LA PORTE ROYALE"
+            }
+          ]
+        },
+        {
+          "rdfs_label": [
+            {
+              "value": "PARC DE LA GARE"
+            }
+          ]
+        },
+        {
+          "rdfs_label": [
+            {
+              "value": "PARC D'ORBIGNY"
+            }
+          ]
+        },
+        {
+          "rdfs_label": [
+            {
+              "value": "PARC DES PERES"
+            }
+          ]
+        },
+        {
+          "rdfs_label": [
+            {
+              "value": "ALLEES DU MAIL"
+            }
+          ]
+        },
+        {
+          "rdfs_label": [
+            {
+              "value": "JARDIN DU MUSEE DU NOUVEAU MONDE"
+            }
+          ]
+        },
+        {
+          "rdfs_label": [
+            {
+              "value": "PLAN D'EAU DE PORT NEUF"
+            }
+          ]
+        },
+        {
+          "rdfs_label": [
+            {
+              "value": "PARC CHARRUYER"
+            }
+          ]
+        },
+        {
+          "rdfs_label": [
+            {
+              "value": "PARC FRANCK DELMAS"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
+```
+
+> 3. Les noms des propriétaires des restaurants de La Rochelle;
+
+**Requête**:
+
+```
+{
+  poi(filters: [{isLocatedAt: {schema_address: {schema_addressLocality: {_eq: "La Rochelle"}}}}, {rdf_type: {_eq: "https://www.datatourisme.gouv.fr/ontology/core#Restaurant"}}]) {
+    total
+    results {
+      rdfs_label {
+        value
+      }
+      isOwnedBy {
+        schema_givenName
+        schema_familyName
+      }
+    }
+  }
+}
+```
+
+**Résultats**:
+
+```json
+{
+  "data": {
+    "poi": {
+      "total": 0,
+      "results": []
+    }
+  }
+}
+```
+
+> 4. Les noms des hôtels de Bordeaux acceptant des animaux;
+
+**Requête**:
+
+```
+{
+  poi(filters: [{isLocatedAt: {schema_address: {schema_addressLocality: {_eq: "Bordeaux"}}}}, {rdf_type: {_eq: "https://www.datatourisme.gouv.fr/ontology/core#Hotel"}}, {isLocatedAt: {petsAllowed: {_eq: true}}}]) {
+    total
+    results {
+      rdfs_label {
+        value
+      }
+    }
+  }
+}
+```
+
+**Résultats**:
+
+```json
+{
+  "data": {
+    "poi": {
+      "total": 11,
+      "results": [
+        {
+          "rdfs_label": [
+            {
+              "value": "Eklo Bordeaux"
+            }
+          ]
+        },
+        {
+          "rdfs_label": [
+            {
+              "value": "H��tel Le Burdigala - Inwood-Hotels Bordeaux"
+            }
+          ]
+        },
+        {
+          "rdfs_label": [
+            {
+              "value": "Ibis Kitchen Lounge"
+            }
+          ]
+        },
+        {
+          "rdfs_label": [
+            {
+              "value": "Restaurant Campanile Bordeaux Le Lac"
+            }
+          ]
+        },
+        {
+          "rdfs_label": [
+            {
+              "value": "Mama Shelter Restaurant"
+            }
+          ]
+        },
+        {
+          "rdfs_label": [
+            {
+              "value": "H��tel Ibis Styles Bordeaux Meriadeck"
+            }
+          ]
+        },
+        {
+          "rdfs_label": [
+            {
+              "value": "Restaurant de l'H��tel Golden Tulip Bordeaux Euratlantique"
+            }
+          ]
+        },
+        {
+          "rdfs_label": [
+            {
+              "value": "H��tel Campanile Bordeaux Nord Le Lac"
+            }
+          ]
+        },
+        {
+          "rdfs_label": [
+            {
+              "value": "H��tel Mercure Bordeaux Centre"
+            }
+          ]
+        },
+        {
+          "rdfs_label": [
+            {
+              "value": "H��tel Novotel Bordeaux Centre"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
+```
+
+> 5. Les plages de Nouvelle Aquitaine accessibles aux personnes à mobilité réduite;
+
+**Requête**:
+
+```
+{
+  poi(filters: [{rdf_type: {_eq: "https://www.datatourisme.gouv.fr/ontology/core#Beach"}}, {reducedMobilityAccess: {_eq: true}}]) {
+    total
+    results {
+      rdfs_label {
+        value
+      }
+    }
+  }
+}
+}
+```
+
+**Résultats**:
+
+```json
+{
+  "data": {
+    "poi": {
+      "total": 2,
+      "results": [
+        {
+          "rdfs_label": [
+            {
+              "value": "R��servoirs de Piraillan"
+            }
+          ]
+        },
+        {
+          "rdfs_label": [
+            {
+              "value": "Rocher de la Vierge"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
+```
