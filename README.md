@@ -238,6 +238,12 @@ Voici une courte sélection des propriétés fonctionnelles identifiables dans l
 
 > Mettre en place un traitement `VerifFunctionelle` qui, pour un nom de propriété, récupère les triplets de cette propriété à l’aide d’une requête **SPARQL**, et vérifie qu’il s’agit bien d’une propriété fonctionnelle;
 
+### Exercice 4
+
+> La propriété `isLocatedAt` est transitive. Identifier si d’autres propriétés sont *sémantiquement* transitives;
+
+> Mettre en place un traitement `VerifTransitive` qui, pour une propriété donnée, récupère les triplets de cette propriété à l’aide d’une requête **SPARQL**, et vérifie qu’il s’agit bien d’une propriété transitive.
+
 ## 3. Visualisation de données géolocalisées et requêtes **GraphQL**
 
 ### Exercice 5
@@ -761,3 +767,35 @@ On obtient le résultat suivant, qui correspond aux **POI** localisé à la Roch
   }
 }
 ```
+
+
+### Exercice 7
+
+> Ecrire une requête **GraphQL** qui renvoie les coordonnées géographiques de chaque **POI** de La Rochelle;
+
+```
+{
+  poi(filters: [{isLocatedAt: {schema_address: {schema_addressLocality: {_eq: "La Rochelle"}}}}]) {
+    total
+    results {
+      rdf_type
+      _uri
+      rdfs_label {
+        value
+      }
+      isLocatedAt {
+        schema_geo {
+          schema_latitude
+          schema_longitude
+        }
+      }
+    }
+  }
+```
+
+> Mettre en place un traitement `geolocalisationPOI` qui affiche sur une carte tous les **POI** de La Rochelle;
+
+> Modifier ce traitement afin qu'il affiche:
+ - Les **POI** d'une ville donnée;
+ - Les **POI** d'une ville donnée et d'un type défini (restaurant, cinéma, plage, etc...);
+ - Les **POI** autour d’un point donné par sa géolocalisation;
