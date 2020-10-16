@@ -233,7 +233,11 @@ Voici une courte sélection des propriétés fonctionnelles identifiables dans l
 > Extraire chacune de ces propriétés à l'aide d'une requête **SPARQL**;
 
 ```SQL
-
+PREFIX <owl:http://www.w3.org/2002/07/owl#>
+SELECT *
+WHERE {
+    ?fun a owl:FunctionalProperty
+}
 ```
 
 > Mettre en place un traitement `VerifFunctionelle` qui, pour un nom de propriété, récupère les triplets de cette propriété à l’aide d’une requête **SPARQL**, et vérifie qu’il s’agit bien d’une propriété fonctionnelle;
