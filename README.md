@@ -12,10 +12,10 @@ Un **POI** ou *Point Of Interest*, est défini comme étant tout élément touri
 
 Il se décompose en quatre sous-types différents:
 
-1. **Produit**: (:`Product`:) Un objet touristique qui peut se consommer (ex: une chambre d'hôtel, une pratique d'activité, une visite guidée, ...);
-2. **Itinéraire touristique**: (:`Tour`:) Un itinéraire touristique est un POI qui propose un itinéraire composé d’étapes formant un parcours;
-3. **Fête et Manifestation**: (:`EntertainmentAndEvent`:) Manifestations, festivals, exposition, ou tout autre évènement ayant un début et une fin;
-4. **Lieu d'intérêt**: (:`PlaceOfInterest`:) Un lieu ayant un intérêt touristique (ex: un site naturel, un site culturel, un village, un restaurant, ...);
+1. **Produit**: (`:Product:`) Un objet touristique qui peut se consommer (ex: une chambre d'hôtel, une pratique d'activité, une visite guidée, ...);
+2. **Itinéraire touristique**: (`:Tour:`) Un itinéraire touristique est un POI qui propose un itinéraire composé d’étapes formant un parcours;
+3. **Fête et Manifestation**: (`:EntertainmentAndEvent:`) Manifestations, festivals, exposition, ou tout autre évènement ayant un début et une fin;
+4. **Lieu d'intérêt**: (`:PlaceOfInterest:`) Un lieu ayant un intérêt touristique (ex: un site naturel, un site culturel, un village, un restaurant, ...);
 
 De manière générale, un **POI** regroupe les propriétés suivantes:
 
